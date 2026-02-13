@@ -14,3 +14,4 @@ def preprocess_inputs(df):
     return X, y
 X, y = preprocess_inputs(data)
 X
+y
