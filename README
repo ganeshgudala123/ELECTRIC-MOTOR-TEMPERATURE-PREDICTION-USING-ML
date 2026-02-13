@@ -1,2 +1,3 @@
 data = pd.read_csv('../input/electric-motor-temperature/temperature_data.csv')
 data
+data.info()
