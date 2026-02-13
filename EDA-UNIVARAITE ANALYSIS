@@ -1,0 +1,18 @@
+eda_df = pd.concat([X, y], axis=1).copy()
+
+
+eda_df.describe()
+
+plt.figure(figsize=(16, 12))
+for i in range(len(eda_df.columns)):
+    plt.subplot(3, 4, i + 1)
+    sns.distplot(eda_df[eda_df.columns[i]])
+plt.show()
+
+plt.figure(figsize=(16, 12))
+for i in range(len(eda_df.columns)):
+    plt.subplot(3, 4, i + 1)
+    sns.boxplot(eda_df[eda_df.columns[i]])
+plt.show()
+
+
