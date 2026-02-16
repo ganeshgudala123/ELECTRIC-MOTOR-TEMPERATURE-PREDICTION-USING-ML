@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Electric Motor Temperature Prediction</title>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #1e3c72, #2a5298);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            width: 420px;
+            text-align: center;
+            box-shadow: 0px 8px 20px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 12px 20px;
+            margin-top: 10px;
+            border: none;
+            background: #2a5298;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background: #1e3c72;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #2a5298;
+        }
+
+        .loader {
+            display: none;
+            margin-top: 10px;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>⚡ Electric Motor Temperature Prediction</h1>
+
+    <input type="number" id="ambient" placeholder="Ambient Temperature" required>
+    <input type="number" id="coolant" placeholder="Coolant Temperature" required>
+    <input type="number" id="u_d" placeholder="Voltage d-axis" required>
+    <input type="number" id="u_q" placeholder="Voltage q-axis" required>
+    <input type="number" id="motor_speed" placeholder="Motor Speed" required>
+    <input type="number" id="torque" placeholder="Torque" required>
+
+    <button onclick="predict()">Predict Temperature</button>
+
+    <div class="loader" id="loader">Predicting...</div>
+    <div class="result" id="result"></div>
+</div>
+
+<script>
+async function predict() {
+
+    document.getElementById("loader").style.display = "block";
+    document.getElementById("result").innerHTML = "";
+
+    const data = {
+        ambient: parseFloat(document.getElementById("ambient").value),
+        coolant: parseFloat(document.getElementById("coolant").value),
+        u_d: parseFloat(document.getElementById("u_d").value),
+        u_q: parseFloat(document.getElementById("u_q").value),
+        motor_speed: parseFloat(document.getElementById("motor_speed").value),
+        torque: parseFloat(document.getElementById("torque").value)
+    };
+
+    const response = await fetch("/predict", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    });
+
+    const result = await response.json();
+
+    document.getElementById("loader").style.display = "none";
+
+    document.getElementById("result").innerHTML =
+        "Predicted Temperature: " + result.prediction + " °C";
+}
+</script>
+
+</body>
+</html>
